@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙放置手游 - 逆天修行</title>
+    <style>
+        body { 
+            font-family: 'Microsoft YaHei', Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .game-container { 
+            background: rgba(255, 255, 255, 0.95); 
+            border: 3px solid #4CAF50; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 { 
+            color: #4CAF50; 
+            text-align: center; 
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .stats { 
+            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 15px; 
+            border: 2px solid #4CAF50;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .stat-item {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        .button { 
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white; 
+            padding: 15px 25px; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            margin: 10px; 
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .button:hover { 
+            background: linear-gradient(45deg, #45a049, #4CAF50);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .button-premium {
+            background: linear-gradient(45deg, #FF9800, #FF5722);
+        }
+        .button-vip {
+            background: linear-gradient(45deg, #9C27B0, #673AB7);
+        }
+        #log { 
+            margin-top: 25px; 
+            height: 250px; 
+            overflow-y: scroll; 
+            border: 2px solid #4CAF50; 
+            padding: 15px; 
+            background: #f9f9f9; 
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .realm-display {
+            font-size: 1.8em;
+            color: #FF5722;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .section-title {
+            color: #2196F3;
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🏔️ 修仙放置手游 - 逆天修行 🏔️</h1>
+        
+        <div class="realm-display" id="realmDisplay">境界：炼气期</div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <strong>修为</strong><br>
+                <span id="cultivation" style="color:#2196F3;font-size:1.2em;">100</span> 点
+            </div>
+            <div class="stat-item">
+                <strong>灵石</strong><br>
+                <span id="spiritStone" style="color:#FF9800;font-size:1.2em;">1000</span> 枚
+            </div>
+            <div class="stat-item">
+                <strong>寿命</strong><br>
+                <span id="lifespan" style="color:#4CAF50;font-size:1.2em;">100</span> 年
+            </div>
+            <div class="stat-item">
+<strong>突破进度</strong>
+
+<span id="breakthroughProgress">20%</span>
+</div>
+</div>
+    <h3 class="section-title">修炼操作</h3>
+    <button class="button" onclick="cultivate()">🧘 修炼 (+10修为)</button>
+    <button class="button" onclick="autoCultivate()">⚡ 自动修炼</button>
+    <button class="button" onclick="breakthrough()">🌟 突破境界</button>
+    <button class="button" onclick="explore()">🗺️ 探索秘境</button>
+    <button class="button" onclick="meditate()">☯️ 闭关悟道</button>
+    
+    <h3 class="section-title">付费功能</h3>
+    <button class="button button-premium" onclick="firstCharge()">🎁 首充6元礼包</button>
+    <button class="button button-vip" onclick="monthlyCard()">📅 月卡30元</button>
+    <button class="button" style="background:linear-gradient(45deg,#FF4081,#F50057);" onclick="buySpiritStone()">💰 购买灵石包</button>
+    
+    <h3 class="section-title">游戏日志</h3>
+    <div id="log">
+        <div class="log-entry">[系统] 欢迎来到修仙世界！开始你的逆天修行之路吧！</div>
+        <div class="log-entry">[提示] 点击"修炼"按钮增加修为，积累足够修为后可突破境界</div>
+        <div class="log-entry">[提示] 探索秘境有机会获得大量灵石</div>
+    </div>
+    
+    <div style="text-align:center; margin-top:20px; color:#666; font-size:0.9em;">
+        修仙放置手游 v1.0 | 支持多平台 | 离线可玩
+    </div>
+</div>
+<script src="game-config.js"></script>
+<script src="game-save.js"></script>
+<script src="skill-system.js"></script>
+<script src="world-map.js"></script>
+<script src="monthly-system.js"></script>
+<script>
+    // 游戏核心逻辑
+    let gameData = {
+        realm: '炼气期',
+        cultivation: 100,
+        spiritStone: 1000,
+        lifespan: 100,
+        realmLevel: 1,
+        autoCultivate: false,
+        lastUpdate: Date.now()
+    };
+    
+    const realms = [
+        {name: '炼气期', req: 0, bonus: '基础修炼'},
+        {name: '筑基期', req: 500, bonus: '修炼速度+50%'},
+        {name: '金丹期', req: 2000, bonus: '寿命+200年'},
+        {name: '元婴期', req: 8000, bonus: '自动修炼'},
+        {name: '化神期', req: 30000, bonus: '飞升仙界'}
+    ];
+    
+    // 初始化游戏
+    function initGame() {
+        updateDisplay();
+        startGameLoop();
+        log('游戏初始化完成！');
+    }
+    
+    // 游戏主循环
+    function startGameLoop() {
+        setInterval(() => {
+            if (gameData.autoCultivate) {
+                gameData.cultivation += 5;
+                updateDisplay();
+            }
+        }, 3000); // 每3秒自动修炼
+    }
+    
+    function updateDisplay() {
+        document.getElementById('cultivation').textContent = gameData.cultivation;
+        document.getElementById('spiritStone').textContent = gameData.spiritStone;
+        document.getElementById('lifespan').textContent = gameData.lifespan;
+        document.getElementById('realmDisplay').textContent = `境界：${gameData.realm}`;
+        
+        // 计算突破进度
+        const currentRealm = realms[gameData.realmLevel - 1];
+        const nextRealm = realms[gameData.realmLevel] || currentRealm;
+        const progress = Math.min(100, Math.floor((gameData.cultivation / nextRealm.req) * 100));
+        document.getElementById('breakthroughProgress').textContent = `${progress}%`;
+    }
+    
+    function cultivate() {
+        gameData.cultivation += 10;
+        log('修炼获得10点修为');
+        updateDisplay();
+    }
+    
+    function autoCultivate() {
+        gameData.autoCultivate = !gameData.autoCultivate;
+        log(gameData.autoCultivate ? '开启自动修炼' : '关闭自动修炼');
+    }
+    
+    function breakthrough() {
+        if (gameData.realmLevel < realms.length) {
+            const nextRealm = realms[gameData.realmLevel];
+            if (gameData.cultivation >= nextRealm.req) {
+                gameData.realmLevel++;
+gameData.realm = realms[gameData.realmLevel - 1].name;
+gameData.cultivation -= nextRealm.req;
+gameData.lifespan += 100;
+log(🎉 突破成功！达到${gameData.realm}！${realms[gameData.realmLevel - 1].bonus});
+if (gameData.realmLevel >= 4) {
+gameData.autoCultivate = true;
+log('解锁自动修炼功能！');
+}
+} else {
+log(修为不足，需要${nextRealm.req}点修为才能突破);
+}
+} else {
+log('已达最高境界！');
+}
+updateDisplay();
+}
+    function explore() {
+        const rewards = [
+            {type: '灵石', amount: 50, chance: 0.5},
+            {type: '灵石', amount: 200, chance: 0.3},
+            {type: '修为', amount: 100, chance: 0.15},
+            {type: '奇遇', amount: 500, chance: 0.05}
+        ];
+        
+        const rand = Math.random();
+        let cumulative = 0;
+        for (const reward of rewards) {
+            cumulative += reward.chance;
+            if (rand <= cumulative) {
+                if (reward.type === '灵石') {
+                    gameData.spiritStone += reward.amount;
+                    log(`探索秘境获得${reward.amount}灵石`);
+                } else if (reward.type === '修为') {
+                    gameData.cultivation += reward.amount;
+                    log(`探索秘境获得${reward.amount}修为`);
+                } else {
+                    gameData.spiritStone += 500;
+                    gameData.cultivation += 300;
+                    log('🎊 奇遇！获得500灵石和300修为！');
+                }
+                break;
+            }
+        }
+        updateDisplay();
+    }
+    
+    function meditate() {
+        gameData.cultivation += 50;
+        gameData.lifespan -= 1;
+        log('闭关悟道获得50修为，消耗1年寿命');
+        updateDisplay();
+    }
+    
+    function firstCharge() {
+        gameData.spiritStone += 5000;
+        gameData.cultivation += 1000;
+        log('🎁 首充6元礼包：获得5000灵石 + 1000修为');
+        updateDisplay();
+    }
+    
+    function monthlyCard() {
+        gameData.spiritStone += 3000;
+        log('📅 月卡激活：每日获得3000灵石');
+        updateDisplay();
+    }
+    
+    function buySpiritStone() {
+        const packages = [
+            {name: '68元礼包', amount: 6800},
+            {name: '128元礼包', amount: 15000},
+            {name: '328元礼包', amount: 40000},
+            {name: '648元礼包', amount: 80000}
+        ];
+        const package = packages[Math.floor(Math.random() * packages.length)];
+        gameData.spiritStone += package.amount;
+        log(`购买${package.name}，获得${package.amount}灵石`);
+        updateDisplay();
+    }
+    
+    function log(message) {
+        const logDiv = document.getElementById('log');
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        logDiv.appendChild(entry);
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    // 页面加载完成后初始化
+    window.addEventListener('DOMContentLoaded', initGame);
+</script>
+</body>
+</html>
